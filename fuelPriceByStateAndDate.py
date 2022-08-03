@@ -37,14 +37,14 @@ class ProcessData:
             self.fuelDataFrame['day'] = pd.DatetimeIndex(self.fuelDataFrame[self.column_date]).month
             columns = columns + ['day']
 
-        self.treatedFuelDataFrame = self.fuelDataFrame.groupby(columns).mean()
+        self.processedFuelDataFrame = self.fuelDataFrame.groupby(columns).mean()
 
     def processed_data(self):
-        return self.treatedFuelDataFrame
+        return self.processedFuelDataFrame.reset_index()
 
     def save_to_csv(self, target_dir, **kwargs):
         dir_exists = os.path.isdir(target_dir)
         if not dir_exists:
             os.mkdir(target_dir)
         path_to_new_file = f'./{target_dir}/Handled-{self.file_name}'
-        self.treatedFuelDataFrame.to_csv(path_to_new_file, **kwargs)
+        self.processedFuelDataFrame.to_csv(path_to_new_file, **kwargs)
